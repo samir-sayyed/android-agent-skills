@@ -10,6 +10,47 @@ A comprehensive Python-based automation toolkit for Android devices. Enables AI 
 
 ---
 
+## 📍 Table of Contents
+- [🚀 New Here? Start Here!](#-new-here-start-here)
+- [🔌 Compatibility](#-compatibility)
+- [✨ Features](#-features)
+- [📦 Installation](#-installation)
+- [🚀 Quick Start](#-quick-start)
+- [📁 Project Structure](#-project-structure)
+- [📖 Script Reference](#-script-reference)
+- [🤖 AI Agent Integration](#-ai-agent-integration)
+- [🔄 CI/CD Integration](#-cicd-integration)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
+
+---
+
+## 🚀 New Here? Start Here!
+**First time using this repository?** This skill is designed to be "dropped in" to your AI coding assistant (Claude Code, Gemini CLI, Cursor, etc.) to give it native Android automation capabilities.
+
+- **[SKILL.md](SKILL.md)** - Understanding how the AI uses this skill
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - How to add new automation scripts
+- **[walkthrough.md](walkthrough.md)** - Detailed automation walkthrough (MDLive Example)
+
+---
+
+## 🔌 Compatibility
+This skill follows the universal **SKILL.md** format and works with any AI coding assistant that supports agentic skills:
+
+| Tool                | Type      | Compatibility | Recommended Installation Path            |
+| ------------------- | --------- | ------------- | ---------------------------------------- |
+| **Claude Code**     | CLI       | ✅ Full       | `.claude/skills/` or `.agent/skills/`    |
+| **Gemini CLI**      | CLI       | ✅ Full       | `.gemini/skills/` or `.agent/skills/`    |
+| **Codex CLI**       | CLI       | ✅ Full       | `.codex/skills/` or `.agent/skills/`     |
+| **Antigravity IDE** | IDE       | ✅ Full       | `.agent/skills/`                         |
+| **Cursor**          | IDE       | ✅ Full       | `.cursor/skills/` or project root        |
+| **GitHub Copilot**  | Extension | ⚠️ Partial    | Copy skill content to `.github/copilot/` |
+
+> [!TIP]
+> Most modern AI tools auto-discover skills in the `.agent/skills/` directory of your project.
+
+---
+
 ## ✨ Features
 
 - 🎯 **Semantic Navigation** - Find UI elements by text, ID, or class instead of fragile coordinates
@@ -23,45 +64,31 @@ A comprehensive Python-based automation toolkit for Android devices. Enables AI 
 
 ## 📦 Installation
 
-### Prerequisites
+To use this skill with your agent, either clone it directly or add it as a submodule:
 
-1. **Python 3.8+**
-   ```bash
-   python3 --version
-   ```
+```bash
+# General / Universal
+git clone https://github.com/samir-sayyed/android-agent-skills.git .agent/skills/android-automation
 
-2. **Android SDK Platform Tools (ADB)**
+# Claude Code
+git clone https://github.com/samir-sayyed/android-agent-skills.git .claude/skills/android-automation
+
+# Gemini CLI
+git clone https://github.com/samir-sayyed/android-agent-skills.git .gemini/skills/android-automation
+```
+
+### 🛠️ Local Setup
+If you are running the scripts manually or developing:
+
+1. **ADB:** Install Android Platform Tools
    ```bash
-   # macOS
    brew install android-platform-tools
-
-   # Linux
-   sudo apt install android-tools-adb
-
-   # Windows
-   # Download from: https://developer.android.com/tools/releases/platform-tools
    ```
-
-3. **Verify ADB is in PATH**
+2. **Python:** 3.8+ required
+3. **Pillow:** (Optional) for visual regression
    ```bash
-   adb version
+   pip install Pillow
    ```
-
-### Clone the Repository
-
-```bash
-git clone https://github.com/YOUR_USERNAME/android-automation-skill.git
-cd android-automation-skill
-```
-
-### Optional Dependencies
-
-For visual regression testing:
-```bash
-pip install Pillow
-```
-
----
 
 ## 🚀 Quick Start
 
@@ -330,9 +357,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Designed for AI-driven automation
 
 ---
-
-## 📬 Contact
-
-Your Name - [@your_twitter](https://twitter.com/your_twitter)
-
-Project Link: [https://github.com/YOUR_USERNAME/android-automation-skill](https://github.com/YOUR_USERNAME/android-automation-skill)
