@@ -344,16 +344,18 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ---
 
+---
+
+## 💡 Inspiration & Credits
+
+This project was inspired by the architectural patterns and concepts developed in:
+- **[mobile-mcp](https://github.com/mobile-next/mobile-mcp)** - A Model Context Protocol (MCP) implementation for mobile automation.
+
+Developing this as a standalone **Android Skill** allows for seamless integration with agentic tools like Claude Code and Gemini CLI using standard ADB protocols.
+
+---
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
----
-
-## 🙏 Acknowledgments
-
-- Inspired by [mobile-mcp](https://github.com/anthropics/mobile-mcp)
-- Built with Android Debug Bridge (ADB)
-- Designed for AI-driven automation
-
----
