@@ -28,9 +28,8 @@ A comprehensive Python-based automation toolkit for Android devices. Enables AI 
 ## 🚀 New Here? Start Here!
 **First time using this repository?** This skill is designed to be "dropped in" to your AI coding assistant (Claude Code, Gemini CLI, Cursor, etc.) to give it native Android automation capabilities.
 
-- **[SKILL.md](SKILL.md)** - Understanding how the AI uses this skill
+- **[SKILL.md](skills/android/SKILL.md)** - Understanding how the AI uses this skill
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** - How to add new automation scripts
-- **[walkthrough.md](walkthrough.md)** - Detailed automation walkthrough (MDLive Example)
 
 ---
 
@@ -64,7 +63,10 @@ This skill follows the universal **SKILL.md** format and works with any AI codin
 
 ## 📦 Installation
 
-To use this skill with your AI coding assistant, clone it into your project's skill directory:
+To use this skill with your AI coding assistant, clone the skill folder into your project's skill directory.
+
+> [!NOTE]
+> This repository separates skill files from repo metadata. Only clone the `skills/android/` folder for a clean install.
 
 ### Quick Install (Choose your tool)
 
@@ -73,19 +75,26 @@ To use this skill with your AI coding assistant, clone it into your project's sk
 cd your-project
 
 # Universal (works with most tools)
-git clone https://github.com/samir-sayyed/android-agent-skills.git .agent/skills/android
+git clone --depth 1 https://github.com/samir-sayyed/android-agent-skills.git /tmp/android-skill && \
+  mkdir -p .agent/skills && cp -r /tmp/android-skill/skills/android .agent/skills/ && \
+  rm -rf /tmp/android-skill
 
 # Claude Code
-git clone https://github.com/samir-sayyed/android-agent-skills.git .claude/skills/android
+git clone --depth 1 https://github.com/samir-sayyed/android-agent-skills.git /tmp/android-skill && \
+  mkdir -p .claude/skills && cp -r /tmp/android-skill/skills/android .claude/skills/ && \
+  rm -rf /tmp/android-skill
 
 # Gemini CLI
-git clone https://github.com/samir-sayyed/android-agent-skills.git .gemini/skills/android
+git clone --depth 1 https://github.com/samir-sayyed/android-agent-skills.git /tmp/android-skill && \
+  mkdir -p .gemini/skills && cp -r /tmp/android-skill/skills/android .gemini/skills/ && \
+  rm -rf /tmp/android-skill
+```
 
-# Cursor
-git clone https://github.com/samir-sayyed/android-agent-skills.git .cursor/skills/android
+### Or Use as Submodule (for version control)
 
-# Or as a submodule (for version control)
-git submodule add https://github.com/samir-sayyed/android-agent-skills.git .agent/skills/android
+```bash
+git submodule add https://github.com/samir-sayyed/android-agent-skills.git .submodules/android-skills
+ln -s ../.submodules/android-skills/skills/android .agent/skills/android
 ```
 
 ### Enable Skills in Gemini CLI (if needed)
@@ -118,7 +127,7 @@ If you are running the scripts manually or developing:
 
 ```bash
 # List connected devices
-./scripts/device/list_devices.sh
+./skills/android/scripts/device/list_devices.sh
 
 # Expected output:
 # {
@@ -132,20 +141,20 @@ If you are running the scripts manually or developing:
 ### 2. Launch an App
 
 ```bash
-python3 scripts/app/app_launch.py --package com.android.settings
+python3 skills/android/scripts/app/app_launch.py --package com.android.settings
 ```
 
 ### 3. Interact with UI
 
 ```bash
 # Map screen elements
-python3 scripts/interaction/screen_mapper.py --clickable
+python3 skills/android/scripts/interaction/screen_mapper.py --clickable
 
 # Tap an element by text
-python3 scripts/interaction/navigator.py --find-text "Wi-Fi" --tap
+python3 skills/android/scripts/interaction/navigator.py --find-text "Wi-Fi" --tap
 
 # Take a screenshot
-python3 scripts/interaction/screenshot.py --output screenshot.png
+python3 skills/android/scripts/interaction/screenshot.py --output screenshot.png
 ```
 
 ---
@@ -153,46 +162,84 @@ python3 scripts/interaction/screenshot.py --output screenshot.png
 ## 📁 Project Structure
 
 ```
-android-automation-skill/
-├── SKILL.md                    # AI agent instructions
-├── README.md                   # This file
-├── resources/
-│   └── common.py               # Shared utilities
-├── scripts/
-│   ├── device/                 # Device management
-│   │   ├── list_devices.sh
-│   │   ├── emulator_boot.py
-│   │   ├── emulator_shutdown.py
-│   │   └── device_info.py
-│   ├── app/                    # App management
-│   │   ├── app_install.py
-│   │   ├── app_uninstall.py
-│   │   ├── app_launch.py
-│   │   ├── app_stop.py
-│   │   └── app_list.py
-│   ├── interaction/            # Screen interaction
-│   │   ├── screenshot.py
-│   │   ├── screen_mapper.py
-│   │   ├── navigator.py
-│   │   └── gesture.py
-│   ├── input/                  # Input simulation
-│   │   ├── keyboard.py
-│   │   ├── button.py
-│   │   └── open_url.py
-│   └── testing/                # Testing & analysis
-│       ├── accessibility_audit.py
-│       ├── logcat_monitor.py
-│       ├── app_state.py
-│       └── visual_diff.py
-└── examples/                   # Usage examples
-    ├── login_flow.md
-    ├── ui_testing.md
-    └── ci_cd_workflow.md
+android-agent-skills/               # Repository root
+├── README.md                       # This file (repo documentation)
+├── LICENSE                         # MIT License
+├── CONTRIBUTING.md                 # Contribution guidelines
+├── .gitignore                      # Git ignore rules
+└── skills/
+    └── android/                    # ← SKILL CONTENT (what AI agents use)
+        ├── SKILL.md                # AI agent instructions
+        ├── resources/
+        │   └── common.py           # Shared utilities
+        ├── scripts/
+        │   ├── device/             # Device management
+        │   ├── app/                # App management  
+        │   ├── interaction/        # Screen interaction
+        │   ├── input/              # Input simulation
+        │   └── testing/            # Testing utilities
+        └── examples/               # Usage examples
 ```
+
+> [!NOTE]
+> When installing, only the `skills/android/` folder is needed. Repo files (LICENSE, README, etc.) are for contributors.
 
 ---
 
 ## 📖 Script Reference
+
+All scripts are located in `skills/android/scripts/` and return JSON output.
+
+### Device Management (`skills/android/scripts/device/`)
+
+| Script | Description |
+|--------|-------------|
+| `list_devices.sh` | List connected devices/emulators |
+| `emulator_boot.py` | Boot emulator by AVD name |
+| `emulator_shutdown.py` | Shutdown emulator |
+| `device_info.py` | Get device properties |
+
+### App Management (`skills/android/scripts/app/`)
+
+| Script | Description |
+|--------|-------------|
+| `app_install.py` | Install APK |
+| `app_uninstall.py` | Uninstall app |
+| `app_launch.py` | Launch app |
+| `app_stop.py` | Force stop app |
+| `app_list.py` | List installed apps |
+
+### Screen Interaction (`skills/android/scripts/interaction/`)
+
+| Script | Description |
+|--------|-------------|
+| `screenshot.py` | Capture screenshot |
+| `annotated_screenshot.py` | Screenshot with labeled elements |
+| `screen_mapper.py` | Analyze UI hierarchy |
+| `navigator.py` | Find/interact with elements |
+| `gesture.py` | Swipe, scroll, pinch |
+| `gesture_record.py` | Record/replay gestures |
+
+### Input & Navigation (`skills/android/scripts/input/`)
+
+| Script | Description |
+|--------|-------------|
+| `keyboard.py` | Type text |
+| `button.py` | Hardware buttons |
+| `open_url.py` | Open URL in browser |
+
+### Testing & Analysis (`skills/android/scripts/testing/`)
+
+| Script | Description |
+|--------|-------------|
+| `accessibility_audit.py` | Check accessibility |
+| `logcat_monitor.py` | Monitor logs |
+| `app_state.py` | Debug snapshot |
+| `visual_diff.py` | Compare screenshots |
+
+---
+
+## 📖 Detailed Script Reference
 
 ### Device Management
 

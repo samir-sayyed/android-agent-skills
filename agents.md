@@ -24,4 +24,4 @@ Use this when the user:
 
 ## Skill file
 
-See [SKILL.md](./SKILL.md) for full capabilities and script reference.
+See [SKILL.md](./skills/android/SKILL.md) for full capabilities and script reference.
