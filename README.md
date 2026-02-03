@@ -29,6 +29,7 @@ A comprehensive Python-based automation toolkit for Android devices. Enables AI 
 **First time using this repository?** This skill is designed to be "dropped in" to your AI coding assistant (Claude Code, Gemini CLI, Cursor, etc.) to give it native Android automation capabilities.
 
 - **[SKILL.md](skills/android/SKILL.md)** - Understanding how the AI uses this skill
+- **[walkthrough.md](skills/android/walkthrough.md)** - Detailed automation walkthrough
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** - How to add new automation scripts
 
 ---
@@ -79,6 +80,11 @@ git clone --depth 1 https://github.com/samir-sayyed/android-agent-skills.git /tm
   mkdir -p .agent/skills && cp -r /tmp/android-skill/skills/android .agent/skills/ && \
   rm -rf /tmp/android-skill
 
+  # Cursor
+git clone --depth 1 https://github.com/samir-sayyed/android-agent-skills.git /tmp/android-skill && \
+  mkdir -p .cursor/skills && cp -r /tmp/android-skill/skills/android .cursor/skills/ && \
+  rm -rf /tmp/android-skill
+
 # Claude Code
 git clone --depth 1 https://github.com/samir-sayyed/android-agent-skills.git /tmp/android-skill && \
   mkdir -p .claude/skills && cp -r /tmp/android-skill/skills/android .claude/skills/ && \
@@ -88,6 +94,7 @@ git clone --depth 1 https://github.com/samir-sayyed/android-agent-skills.git /tm
 git clone --depth 1 https://github.com/samir-sayyed/android-agent-skills.git /tmp/android-skill && \
   mkdir -p .gemini/skills && cp -r /tmp/android-skill/skills/android .gemini/skills/ && \
   rm -rf /tmp/android-skill
+
 ```
 
 ### Or Use as Submodule (for version control)
