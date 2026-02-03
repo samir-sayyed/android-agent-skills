@@ -288,6 +288,110 @@ def find_elements(
     return matches
 
 
+def wait_for_element(
+    udid: str,
+    text: Optional[str] = None,
+    resource_id: Optional[str] = None,
+    class_name: Optional[str] = None,
+    content_desc: Optional[str] = None,
+    timeout: float = 10.0,
+    poll_interval: float = 0.5
+) -> Optional[UIElement]:
+    """
+    Wait for a UI element to appear with polling.
+    
+    Args:
+        udid: Target device UDID
+        text: Match by text content
+        resource_id: Match by resource ID
+        class_name: Match by class name
+        content_desc: Match by content description
+        timeout: Maximum time to wait in seconds
+        poll_interval: Time between polls in seconds
+    
+    Returns:
+        UIElement if found within timeout, None otherwise
+    """
+    import time
+    start = time.time()
+    
+    while time.time() - start < timeout:
+        try:
+            xml = get_ui_hierarchy(udid)
+            elements = parse_ui_hierarchy(xml)
+            element = find_element(
+                elements,
+                text=text,
+                resource_id=resource_id,
+                class_name=class_name,
+                content_desc=content_desc
+            )
+            if element:
+                return element
+        except ADBError:
+            pass  # Retry on ADB errors
+        
+        time.sleep(poll_interval)
+    
+    return None
+
+
+def parse_node_to_element(node, index: int = 0) -> UIElement:
+    """Convert an XML node to UIElement."""
+    bounds = parse_bounds(node.get('bounds', '[0,0][0,0]'))
+    return UIElement(
+        resource_id=node.get('resource-id', ''),
+        class_name=node.get('class', ''),
+        text=node.get('text', ''),
+        content_desc=node.get('content-desc', ''),
+        bounds=bounds,
+        clickable=node.get('clickable', 'false') == 'true',
+        focusable=node.get('focusable', 'false') == 'true',
+        enabled=node.get('enabled', 'true') == 'true',
+        index=index
+    )
+
+
+def find_by_xpath(xml_string: str, xpath: str) -> List[UIElement]:
+    """
+    Find elements using XPath expression.
+    
+    Args:
+        xml_string: XML dump from uiautomator
+        xpath: XPath expression to match elements
+    
+    Returns:
+        List of matching UIElement objects
+    
+    Examples:
+        - "//android.widget.Button[@text='Login']"
+        - "//android.widget.EditText"
+        - "//*[@resource-id='com.example:id/submit']"
+        - "//android.widget.LinearLayout//Button"
+    """
+    elements = []
+    
+    try:
+        root = ET.fromstring(xml_string)
+        # ElementTree XPath support is limited, so we normalize the path
+        # Replace 'node' references and handle common patterns
+        normalized_xpath = xpath
+        
+        # Find matching nodes
+        nodes = root.findall(normalized_xpath)
+        
+        for i, node in enumerate(nodes):
+            elements.append(parse_node_to_element(node, i))
+            
+    except ET.ParseError:
+        pass
+    except Exception:
+        # XPath syntax errors
+        pass
+    
+    return elements
+
+
 def tap(x: int, y: int, udid: Optional[str] = None) -> None:
     """Tap at coordinates."""
     run_shell_command(f'input tap {x} {y}', udid=udid)
@@ -346,14 +450,49 @@ def get_screen_size(udid: Optional[str] = None) -> Tuple[int, int]:
     return (1080, 1920)  # Default
 
 
-def output_json(data: Any, success: bool = True, error: Optional[str] = None) -> None:
-    """Output result as JSON to stdout."""
+def output_json(data: Any, success: bool = True, error: Optional[str] = None, timing: Dict[str, float] = None) -> None:
+    """Output result as JSON to stdout with optional timing info."""
     result = {
         'success': success,
         'data': data,
         'error': error
     }
+    if timing:
+        result['timing_ms'] = timing
     print(json.dumps(result, indent=2, default=str))
+
+
+class Timer:
+    """Context manager for timing operations."""
+    
+    def __init__(self):
+        self.timings = {}
+        self._starts = {}
+    
+    def start(self, name: str):
+        """Start timing an operation."""
+        import time
+        self._starts[name] = time.time()
+    
+    def stop(self, name: str):
+        """Stop timing and record duration."""
+        import time
+        if name in self._starts:
+            self.timings[name] = round((time.time() - self._starts[name]) * 1000, 2)
+            del self._starts[name]
+    
+    def __enter__(self):
+        import time
+        self._total_start = time.time()
+        return self
+    
+    def __exit__(self, *args):
+        import time
+        self.timings['total'] = round((time.time() - self._total_start) * 1000, 2)
+    
+    def get_timings(self) -> Dict[str, float]:
+        """Get all recorded timings in milliseconds."""
+        return self.timings
 
 
 def output_error(message: str, exit_code: int = 1) -> None:

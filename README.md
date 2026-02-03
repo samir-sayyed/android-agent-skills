@@ -64,17 +64,39 @@ This skill follows the universal **SKILL.md** format and works with any AI codin
 
 ## 📦 Installation
 
-To use this skill with your agent, either clone it directly or add it as a submodule:
+To use this skill with your AI coding assistant, clone it into your project's skill directory:
+
+### Quick Install (Choose your tool)
 
 ```bash
-# General / Universal
-git clone https://github.com/samir-sayyed/android-agent-skills.git .agent/skills/android-automation
+# Navigate to your project
+cd your-project
+
+# Universal (works with most tools)
+git clone https://github.com/samir-sayyed/android-agent-skills.git .agent/skills/android
 
 # Claude Code
-git clone https://github.com/samir-sayyed/android-agent-skills.git .claude/skills/android-automation
+git clone https://github.com/samir-sayyed/android-agent-skills.git .claude/skills/android
 
 # Gemini CLI
-git clone https://github.com/samir-sayyed/android-agent-skills.git .gemini/skills/android-automation
+git clone https://github.com/samir-sayyed/android-agent-skills.git .gemini/skills/android
+
+# Cursor
+git clone https://github.com/samir-sayyed/android-agent-skills.git .cursor/skills/android
+
+# Or as a submodule (for version control)
+git submodule add https://github.com/samir-sayyed/android-agent-skills.git .agent/skills/android
+```
+
+### Enable Skills in Gemini CLI (if needed)
+
+Add to `~/.gemini/settings.json`:
+```json
+{
+  "experimental": {
+    "skills": true
+  }
+}
 ```
 
 ### 🛠️ Local Setup

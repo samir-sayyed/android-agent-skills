@@ -1,6 +1,37 @@
 ---
 name: Android Automation Skill
-description: AI-driven Android automation and testing using ADB. 20+ scripts for device management, app control, screen interaction, and testing.
+description: |
+  Use this skill when the user wants to:
+  - Control Android devices, emulators, or simulators
+  - Perform mobile testing, QA automation, or UI testing on Android
+  - Find, tap, scroll, or interact with elements on Android screens
+  - Launch, install, uninstall, or manage Android apps
+  - Take screenshots, capture logs, or debug Android issues
+  - Write or run Appium-like automation without Appium
+  - Get element locators, accessibility tree, or UI hierarchy
+  - Press hardware buttons like back, home, or volume
+  - Type text or enter credentials on Android
+  
+  This skill provides 20+ ADB-based Python automation scripts.
+triggers:
+  - android
+  - mobile testing
+  - adb
+  - emulator
+  - appium alternative
+  - ui automation
+  - tap element
+  - scroll screen
+  - find locator
+  - app testing
+  - android device
+  - mobile app
+  - screen mapper
+  - accessibility audit
+invocation:
+  - /android
+  - /mobile
+  - /adb
 ---
 
 # Android Automation Skill
@@ -64,9 +95,29 @@ python scripts/interaction/navigator.py --find-text "Settings" --tap
 | Script | Description | Usage |
 |--------|-------------|-------|
 | `screenshot.py` | Capture screenshot | `python scripts/interaction/screenshot.py --output shot.png` |
+| `annotated_screenshot.py` | Screenshot with labeled elements | `python scripts/interaction/annotated_screenshot.py --output annotated.png` |
 | `screen_mapper.py` | Analyze UI hierarchy | `python scripts/interaction/screen_mapper.py [--format tree]` |
 | `navigator.py` | Find/interact with elements | `python scripts/interaction/navigator.py --find-text "Login" --tap` |
 | `gesture.py` | Swipe, scroll, pinch | `python scripts/interaction/gesture.py --swipe up` |
+| `gesture_record.py` | Record/replay gestures | `python scripts/interaction/gesture_record.py --record gestures.json` |
+
+#### Advanced Navigator Features
+
+The `navigator.py` script supports advanced element finding:
+
+```bash
+# Wait for element (useful after navigation/loading)
+python scripts/interaction/navigator.py --find-text "Welcome" --wait-timeout 10 --tap
+
+# XPath queries
+python scripts/interaction/navigator.py --xpath "//android.widget.Button[@text='Submit']" --tap
+
+# Self-healing with fallbacks (tries primary, then fallbacks)
+python scripts/interaction/navigator.py --find-text "Login" --fallback-id "submit_btn" --tap
+
+# Retry on failure
+python scripts/interaction/navigator.py --find-id "dynamic_element" --retry-count 3 --tap
+```
 
 ### Input & Navigation
 
